@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from config import settings
-from decorators import driver_handler
 from scales_driver_async.drivers import ScalesDriver
+
+from .config import settings
+from .decorators import driver_handler
+
 
 scales: dict[str, ScalesDriver] = settings.scales
 
@@ -20,10 +22,27 @@ class Weight(BaseModel):
     status: str = 'unknown'
 
 
+class ErrMessage(BaseModel):
+    detail: str
+
+
+err_responses = {
+    404: {
+        'model': ErrMessage, 'description': 'Not found'
+    },
+    500: {
+        'model': ErrMessage,
+        'description': 'Internal Server Error or scales error'
+    }
+}
+
+
 app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
 
-
-@app.get("/scales/{scale_id}/weight")
+@app.get(
+    "/scales/{scale_id}/weight",
+    responses=err_responses
+)
 @driver_handler
 async def get_weight(scale_id: str) -> Weight:
     weight, status = await (scales[scale_id]
@@ -32,7 +51,10 @@ async def get_weight(scale_id: str) -> Weight:
                   status=status_repr.get(status, unknown_status))
 
 
-@app.get("/scales/{scale_id}/info")
+@app.get(
+    "/scales/{scale_id}/info",
+    responses=err_responses
+)
 @driver_handler
 async def get_info(scale_id: str) -> str:
     return await (scales[scale_id].get_info())

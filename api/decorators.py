@@ -1,8 +1,7 @@
 import functools
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 from scales_driver_async.exeptions import ConnectorError, ScalesError
-from starlette.responses import JSONResponse
 
 
 def driver_handler(func):
@@ -19,7 +18,8 @@ def driver_handler(func):
         except ConnectorError:
             raise HTTPException(
                 status_code=500,
-                detail='Нет ответа от весов.')
+                detail='Нет ответа от весов.'
+            )
         except ScalesError:
             raise HTTPException(
                 status_code=500,

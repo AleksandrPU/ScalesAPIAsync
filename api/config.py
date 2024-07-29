@@ -11,7 +11,7 @@ class Settings:
         'CASType6': CASType6,
         'MassK1C': MassK1C
     }
-    _CONF_FILE = 'settings.toml'
+    _CONF_FILE = r'api/settings.toml'
     _ERR_MSG = f'Ошибка конфигурации. Файл {_CONF_FILE}. {{details}}'
 
     APP_NAME = os.getenv('APP_NAME', 'ScalesAPIAsync')
