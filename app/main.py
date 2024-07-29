@@ -16,11 +16,11 @@ unknown_status = 'unknown'
 
 
 class Weight(BaseModel):
-    weight: str = '25.1'
+    weight: str = '0'
     status: str = 'unknown'
 
 
-app = FastAPI()
+app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
 
 
 @app.get("/scales/{scale_id}/weight")

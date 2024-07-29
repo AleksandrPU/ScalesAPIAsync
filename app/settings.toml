@@ -2,20 +2,17 @@
 name='Bench scales'
 driver='CASType6'
 connection_type='serial'
-[scales.1.connection_params]
 transfer_timeout=1
-url='/dev/ttyUSB0'
+port='/dev/ttyUSB0'
 baudrate=9600
 bytesize=8
 parity='N'
 stopbits=1
 
-
 [scales.2]
-name='Bench scales'
-connection_type='socket'
+name='Crane scales'
 driver='MassK1C'
-[scales.2.connection_params]
+connection_type='socket'
 transfer_timeout=1
 host='10.1.20.30'
 port=9000
