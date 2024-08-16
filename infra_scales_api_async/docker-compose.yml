@@ -1,0 +1,27 @@
+services:
+  api:
+    build: ../api
+    container_name: scales-api
+    restart: unless-stopped
+    volumes:
+      - ./settings.toml:/app/settings.toml
+    ports:
+      - 8111:8000
+#    devices:
+#      - "/dev/ttyUSB0:/dev/ttyUSB0"
+
+#  api:
+#    image: kraleksey/owen_counter_api:latest
+#    restart: unless-stopped
+#    devices:
+#      - "/dev/ttyUSB0:/dev/ttyUSB0"
+
+#  nginx:
+#    image: nginx:1.25.1
+#    restart: unless-stopped
+#    ports:
+#      - "8111:8000"
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+#    depends_on:
+#      - app

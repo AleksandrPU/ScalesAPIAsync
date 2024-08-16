@@ -1,6 +1,5 @@
 import os
 import tomllib
-from pprint import pprint
 from typing import Type
 
 from scales_driver_async.drivers import ScalesDriver, CASType6, MassK1C
@@ -11,10 +10,8 @@ class Settings:
         'CASType6': CASType6,
         'MassK1C': MassK1C
     }
-    _CONF_FILE = r'api/settings.toml'
+    _CONF_FILE = r'settings.toml'
     _ERR_MSG = f'Ошибка конфигурации. Файл {_CONF_FILE}. {{details}}'
-
-    APP_NAME = os.getenv('APP_NAME', 'ScalesAPIAsync')
 
     DEBUG = os.getenv('DEBUG', 'False') == 'true'
 

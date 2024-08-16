@@ -3,8 +3,8 @@ from pydantic import BaseModel
 
 from scales_driver_async.drivers import ScalesDriver
 
-from .config import settings
-from .decorators import driver_handler
+from config import settings
+from decorators import driver_handler
 
 
 scales: dict[str, ScalesDriver] = settings.scales
@@ -37,7 +37,8 @@ err_responses = {
 }
 
 
-app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
+app = FastAPI(title='ScalesAPIAsync', debug=settings.DEBUG)
+
 
 @app.get(
     "/scales/{scale_id}/weight",
