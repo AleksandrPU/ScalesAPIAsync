@@ -21,9 +21,9 @@ jobs:
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v5
         with:
-          context: backend
+          context: api
           push: true
-          tags: polipak/pro2_backend:latest
+          tags: kraleksey/scales_api_async:latest
 
   send_message:
     if: ${{ always() }}
