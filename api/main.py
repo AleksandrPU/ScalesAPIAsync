@@ -27,21 +27,27 @@ class ErrMessage(BaseModel):
 
 
 err_responses = {
+    202: {
+        'model': ErrMessage, 'description': 'No response from device or device error'
+    },
     404: {
         'model': ErrMessage, 'description': 'Not found'
     },
     500: {
         'model': ErrMessage,
-        'description': 'Internal Server Error or scales error'
+        'description': 'Internal Server Error.'
     }
 }
 
 
-app = FastAPI(title='ScalesAPIAsync', debug=settings.DEBUG)
+app = FastAPI(title='ScalesAPIAsync',
+              debug=settings.DEBUG,
+              docs_url='/api/docs',
+              redoc_url='/api/redoc')
 
 
 @app.get(
-    "/scales/{scale_id}/weight",
+    "/api/scales/{scale_id}/weight",
     responses=err_responses
 )
 @driver_handler
@@ -53,7 +59,7 @@ async def get_weight(scale_id: str) -> Weight:
 
 
 @app.get(
-    "/scales/{scale_id}/info",
+    "/api/scales/{scale_id}/info",
     responses=err_responses
 )
 @driver_handler

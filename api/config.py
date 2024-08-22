@@ -47,7 +47,7 @@ class Settings:
                     self._ERR_MSG.format(
                         details=f'Раздел "[scales.{s_id}]". '
                                 f'Отсутствуют  обязательные параметры: '
-                                f'{', '.join(missed_params)}.')
+                                f'{", ".join(missed_params)}.')
                 )
             if s_params['driver'] not in self._DRIVERS:
                 raise ValueError(self._ERR_MSG.format(

@@ -1,0 +1,18 @@
+[scales.1]
+name='Bench scales'
+driver='CASType6'
+connection_type='serial'
+transfer_timeout=1
+port='/dev/ttyUSB0'
+baudrate=9600
+bytesize=8
+parity='N'
+stopbits=1
+
+[scales.2]
+name='Crane scales'
+driver='MassK1C'
+connection_type='socket'
+transfer_timeout=1
+host='10.1.20.30'
+port=9000
