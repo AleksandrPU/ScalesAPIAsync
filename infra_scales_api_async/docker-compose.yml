@@ -1,14 +1,13 @@
 services:
   api-local:
     build: ../api
-    container_name: scales-api
+    container_name: scales-api-local
     restart: unless-stopped
     volumes:
       - ./settings.toml:/app/settings.toml
     ports:
-      - 8100:8000
-    profiles:
-      - local
+      - "8100:8000"
+    profiles: [local]
 #    devices:
 #      - "/dev/ttyUSB0:/dev/ttyUSB0"
 #    env_file:
@@ -16,10 +15,14 @@ services:
 
 
   api-dockerhub:
-    image: kraleksey/owen_counter_api:latest
+    image: kraleksey/scales_api_async:latest
+    container_name: scales-api
     restart: unless-stopped
-    profiles:
-      - dockerhub
+    volumes:
+      - ./settings.toml:/app/settings.toml
+    ports:
+      - "8100:8000"
+    profiles: [dockerhub]
 #    devices:
 #      - "/dev/ttyUSB0:/dev/ttyUSB0"
 
