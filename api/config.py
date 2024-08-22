@@ -2,7 +2,7 @@ import os
 import tomllib
 from typing import Type
 
-from scales_driver_async.drivers import ScalesDriver, CASType6, MassK1C
+from scales_driver_async.drivers import CASType6, MassK1C, ScalesDriver
 
 
 class Settings:

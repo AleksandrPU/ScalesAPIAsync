@@ -1,11 +1,10 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 
+from pydantic import BaseModel
 from scales_driver_async.drivers import ScalesDriver
 
 from config import settings
 from decorators import driver_handler
-
 
 scales: dict[str, ScalesDriver] = settings.scales
 

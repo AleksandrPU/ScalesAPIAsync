@@ -1,6 +1,7 @@
 import functools
 
 from fastapi import HTTPException
+
 from scales_driver_async.exeptions import ConnectorError, ScalesError
 
 
