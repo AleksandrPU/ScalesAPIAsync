@@ -35,9 +35,9 @@ class Settings:
             if type(s_params) is not dict:
                 raise ValueError(
                     self._ERR_MSG.format(
-                        details=f'Неверно сконфигурирован раздел "[scales]". '
-                                f'Параметры весов должны находиться во '
-                                f'вложенном разделе "[scales.<unique_id>]".'
+                        details='Неверно сконфигурирован раздел "[scales]". '
+                                'Параметры весов должны находиться во '
+                                'вложенном разделе "[scales.<unique_id>]".'
                     )
                 )
             missed_params = ({'name', 'driver', 'connection_type'}

@@ -17,7 +17,16 @@ status_repr = {
 unknown_status = 'unknown'
 
 
-class Weight(BaseModel):
+class ScaleModel(BaseModel):
+    id: str
+    name: str
+
+
+class InfoModel(BaseModel):
+    info: str
+
+
+class WeightModel(BaseModel):
     weight: str = '0'
     status: str = 'unknown'
 
@@ -28,7 +37,8 @@ class ErrMessage(BaseModel):
 
 err_responses = {
     202: {
-        'model': ErrMessage, 'description': 'No response from device or device error'
+        'model': ErrMessage,
+        'description': 'No response from device or device error'
     },
     404: {
         'model': ErrMessage, 'description': 'Not found'
@@ -46,22 +56,27 @@ app = FastAPI(title='ScalesAPIAsync',
               redoc_url='/api/redoc')
 
 
+@app.get('/api/scales')
+async def get_scales_list() -> list[ScaleModel]:
+    return [ScaleModel(id=s_id, name=s.name) for s_id, s in scales.items()]
+
+
 @app.get(
-    "/api/scales/{scale_id}/weight",
+    '/api/scales/{scale_id}/weight',
     responses=err_responses
 )
 @driver_handler
-async def get_weight(scale_id: str) -> Weight:
+async def get_weight(scale_id: str) -> WeightModel:
     weight, status = await (scales[scale_id]
                             .get_weight(ScalesDriver.UNIT_KG))
-    return Weight(weight=str(weight),
-                  status=status_repr.get(status, unknown_status))
+    return WeightModel(weight=str(weight),
+                       status=status_repr.get(status, unknown_status))
 
 
 @app.get(
-    "/api/scales/{scale_id}/info",
+    '/api/scales/{scale_id}/info',
     responses=err_responses
 )
 @driver_handler
-async def get_info(scale_id: str) -> str:
-    return await (scales[scale_id].get_info())
+async def get_info(scale_id: str) -> InfoModel:
+    return InfoModel(info=await scales[scale_id].get_info())

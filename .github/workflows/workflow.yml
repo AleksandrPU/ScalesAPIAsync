@@ -1,4 +1,4 @@
-name: ScalesAPIAsinc workflow
+name: ScalesAPIAsync workflow
 on:
   push:
     branches:
