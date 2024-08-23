@@ -6,7 +6,7 @@ services:
     volumes:
       - ./settings.toml:/app/settings.toml
     ports:
-      - "8100:8000"
+      - "8080:8000"
     profiles: [local]
 #    devices:
 #      - "/dev/ttyUSB0:/dev/ttyUSB0"
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./settings.toml:/app/settings.toml
     ports:
-      - "8100:8000"
+      - "8080:8000"
     profiles: [dockerhub]
 #    devices:
 #      - "/dev/ttyUSB0:/dev/ttyUSB0"

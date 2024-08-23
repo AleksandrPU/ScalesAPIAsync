@@ -1,10 +1,12 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from pydantic import BaseModel
 from scales_driver_async.drivers import ScalesDriver
 
 from config import settings
 from decorators import driver_handler
+
 
 scales: dict[str, ScalesDriver] = settings.scales
 
@@ -53,6 +55,13 @@ app = FastAPI(title='ScalesAPIAsync',
               debug=settings.DEBUG,
               docs_url='/api/docs',
               redoc_url='/api/redoc')
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get('/api/scales')

@@ -1,9 +1,11 @@
 import os
 import tomllib
 from typing import Type
+from dotenv import load_dotenv
 
 from scales_driver_async.drivers import CASType6, MassK1C, ScalesDriver
 
+load_dotenv()
 
 class Settings:
     _DRIVERS = {
@@ -14,6 +16,7 @@ class Settings:
     _ERR_MSG = f'Ошибка конфигурации. Файл {_CONF_FILE}. {{details}}'
 
     DEBUG = os.getenv('DEBUG', 'False') == 'true'
+    CORS_ORIGINS = os.getenv('CORS_ORIGINS', '').split(', ')
 
     def __init__(self):
         try:

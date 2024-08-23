@@ -23,8 +23,8 @@ API реализован на FastAPI. Код драйвера и API асинх
 ```
 docker compose --profile dockerhub up
 ```
-После запуска будет доступна документация API по адресам [http://localhost:8100/api/docs]() и 
-[http://localhost:8100/api/redoc]()
+После запуска будет доступна документация API по адресам [http://localhost:8080/api/docs]() и 
+[http://localhost:8080/api/redoc]()
 
 Пример конфигурации settings.toml:
 ```toml
