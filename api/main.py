@@ -37,17 +37,17 @@ class ErrMessage(BaseModel):
 
 
 err_responses = {
-    202: {
-        'model': ErrMessage,
-        'description': 'No response from device or device error'
-    },
     404: {
         'model': ErrMessage, 'description': 'Not found'
     },
     500: {
         'model': ErrMessage,
         'description': 'Internal Server Error.'
-    }
+    },
+    503: {
+        'model': ErrMessage,
+        'description': 'No response from device or device error'
+    },
 }
 
 

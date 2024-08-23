@@ -18,7 +18,7 @@ def driver_handler(func):
             )
         except ConnectorError:
             raise HTTPException(
-                status_code=202,
+                status_code=503,
                 detail='Нет ответа от весов.'
             )
         except ScalesError:

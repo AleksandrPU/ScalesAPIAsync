@@ -23,6 +23,7 @@ services:
     ports:
       - "8080:8000"
     profiles: [dockerhub]
+#    env_file:
+#      - .env
 #    devices:
 #      - "/dev/ttyUSB0:/dev/ttyUSB0"
-
