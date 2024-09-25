@@ -5,13 +5,15 @@ services:
     restart: unless-stopped
     volumes:
       - ./settings.toml:/app/settings.toml
+      - ./logs:/app/logs
+
     ports:
       - "8080:8000"
     profiles: [local]
 #    devices:
 #      - "/dev/ttyUSB0:/dev/ttyUSB0"
-#    env_file:
-#      - .env
+    env_file:
+      - .env
 
 
   api-dockerhub:
@@ -20,10 +22,13 @@ services:
     restart: unless-stopped
     volumes:
       - ./settings.toml:/app/settings.toml
+      - ./logs:/app/logs
     ports:
       - "8080:8000"
     profiles: [dockerhub]
-#    env_file:
-#      - .env
+    env_file:
+      - .env
+
+
 #    devices:
 #      - "/dev/ttyUSB0:/dev/ttyUSB0"

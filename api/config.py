@@ -9,7 +9,7 @@ from scales_driver_async.drivers import CASType6, MassK1C, ScalesDriver
 
 load_dotenv()
 
-log_handler = RotatingFileHandler(r'logs\error.log',
+log_handler = RotatingFileHandler(r'logs/error.log',
                                   maxBytes=1024 * 1024 * 1,
                                   backupCount=2)
 log_handler.setFormatter(
