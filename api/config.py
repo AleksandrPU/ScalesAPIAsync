@@ -1,11 +1,24 @@
 import os
 import tomllib
+import logging
+from logging.handlers import RotatingFileHandler
 from typing import Type
 from dotenv import load_dotenv
 
 from scales_driver_async.drivers import CASType6, MassK1C, ScalesDriver
 
 load_dotenv()
+
+log_handler = RotatingFileHandler(r'logs\error.log',
+                                  maxBytes=1024 * 1024 * 1,
+                                  backupCount=2)
+log_handler.setFormatter(
+    logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+)
+
+logger = logging.getLogger('uvicorn.error')
+logger.addHandler(log_handler)
+
 
 class Settings:
     _DRIVERS = {
@@ -20,6 +33,10 @@ class Settings:
     CORS_ORIGINS = os.getenv('CORS_ORIGINS', '').split(', ')
 
     def __init__(self):
+        self.scales = {}
+        self._init_scales()
+
+    def _init_scales(self):
         try:
             with open(self._CONF_FILE, 'r') as f:
                 conf = tomllib.loads(f.read())
@@ -34,7 +51,6 @@ class Settings:
                     details='Добавьте раздел "[scales.<unique_id>]".')
             )
 
-        self.scales = {}
         for s_id, s_params in conf['scales'].items():
             if type(s_params) is not dict:
                 raise ValueError(
