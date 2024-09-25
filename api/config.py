@@ -14,6 +14,7 @@ class Settings:
     }
     _CONF_FILE = r'settings.toml'
     _ERR_MSG = f'Ошибка конфигурации. Файл {_CONF_FILE}. {{details}}'
+    _REQUIRED_SCALES_PARAMS = {'name', 'driver', 'connection_type'}
 
     DEBUG = os.getenv('DEBUG', 'False') == 'true'
     CORS_ORIGINS = os.getenv('CORS_ORIGINS', '').split(', ')
@@ -43,8 +44,7 @@ class Settings:
                                 'вложенном разделе "[scales.<unique_id>]".'
                     )
                 )
-            missed_params = ({'name', 'driver', 'connection_type'}
-                             - set(s_params.keys()))
+            missed_params = self._REQUIRED_SCALES_PARAMS - s_params.keys()
             if missed_params:
                 raise ValueError(
                     self._ERR_MSG.format(
