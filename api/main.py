@@ -7,7 +7,6 @@ from scales_driver_async.drivers import ScalesDriver
 from config import settings
 from decorators import driver_handler
 
-
 scales: dict[str, ScalesDriver] = settings.scales
 
 status_repr = {

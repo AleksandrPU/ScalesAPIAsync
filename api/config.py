@@ -1,10 +1,10 @@
+import logging
 import os
 import tomllib
-import logging
 from logging.handlers import RotatingFileHandler
 from typing import Type
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from scales_driver_async.drivers import CASType6, MassK1C, ScalesDriver
 
 load_dotenv()

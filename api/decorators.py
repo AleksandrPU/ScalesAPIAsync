@@ -1,8 +1,11 @@
 import functools
+import logging
 
 from fastapi import HTTPException
 
 from scales_driver_async.exeptions import ConnectorError, ScalesError
+
+logger = logging.getLogger('uvicorn.error')
 
 
 def driver_handler(func):
@@ -12,18 +15,22 @@ def driver_handler(func):
             return await func(*args, **kwargs)
         except LookupError:
             scales_id = kwargs.get('scale_id', '')
+            message = f'Весы с id = "{scales_id}" не найдены.'
             raise HTTPException(
                 status_code=404,
-                detail=f'Весы с id = "{scales_id}" не найдены.'
+                detail=message
             )
-        except ConnectorError:
+        except ConnectorError as e:
+            logger.error(f'{kwargs}. {e}')
             raise HTTPException(
                 status_code=503,
                 detail='Нет ответа от весов.'
             )
-        except ScalesError:
+        except ScalesError as e:
+            logger.error(f'{kwargs}. {e}')
             raise HTTPException(
                 status_code=202,
                 detail='Получен неверный ответ от весов.'
             )
+
     return wrapper
