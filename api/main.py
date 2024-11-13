@@ -1,7 +1,10 @@
+from decimal import Decimal
+from enum import IntEnum
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from scales_driver_async.drivers import ScalesDriver
 
 from config import settings
@@ -9,12 +12,15 @@ from decorators import driver_handler
 
 scales: dict[str, ScalesDriver] = settings.scales
 
-status_repr = {
-    ScalesDriver.STATUS_STABLE: 'stable',
-    ScalesDriver.STATUS_UNSTABLE: 'unstable',
-    ScalesDriver.STATUS_OVERLOAD: 'overloaded'
-}
-unknown_status = 'unknown'
+
+class ScalesStatus(IntEnum):
+    stable = ScalesDriver.STATUS_STABLE
+    unstable = ScalesDriver.STATUS_UNSTABLE
+    overload = ScalesDriver.STATUS_OVERLOAD
+
+    @classmethod
+    def names(cls) -> list[str]:
+        return [i.name for i in cls]
 
 
 class ScaleModel(BaseModel):
@@ -27,8 +33,15 @@ class InfoModel(BaseModel):
 
 
 class WeightModel(BaseModel):
-    weight: str = '0'
+    weight: Decimal = Decimal('0')
     status: str = 'unknown'
+
+    @field_validator('status')
+    @classmethod
+    def status_validate(cls, value):
+        if value not in ScalesStatus.names():
+            raise ValueError(f'Status must be one of {ScalesStatus.names()}.')
+        return value
 
 
 class ErrMessage(BaseModel):
@@ -48,7 +61,6 @@ err_responses = {
         'description': 'No response from device or device error'
     },
 }
-
 
 app = FastAPI(title='ScalesAPIAsync',
               debug=settings.DEBUG,
@@ -77,7 +89,18 @@ async def get_weight(scale_id: str) -> WeightModel:
     weight, status = await (scales[scale_id]
                             .get_weight(ScalesDriver.UNIT_KG))
     return WeightModel(weight=str(weight),
-                       status=status_repr.get(status, unknown_status))
+                       status=ScalesStatus(status).name)
+
+
+@app.post('/api/scales/{scale_id}/weight',
+          responses=err_responses)
+@driver_handler
+async def set_weight(scale_id: str, readings: WeightModel) -> WeightModel:
+    await scales[scale_id].set_weight(readings.weight,
+                                      ScalesDriver.UNIT_KG,
+                                      ScalesStatus[readings.status].value)
+    weight, status = await (scales[scale_id].get_weight(ScalesDriver.UNIT_KG))
+    return WeightModel(weight=weight, status=ScalesStatus(status).name)
 
 
 @app.get(

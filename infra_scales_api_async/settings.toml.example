@@ -16,3 +16,11 @@ connection_type='socket'
 transfer_timeout=1
 host='10.1.20.30'
 port=9000
+
+[scales.3]
+name='Test'
+driver='FakeScales'
+connection_type='socket'
+transfer_timeout=1
+host=''
+port=9000

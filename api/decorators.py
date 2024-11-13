@@ -3,7 +3,9 @@ import logging
 
 from fastapi import HTTPException
 
-from scales_driver_async.exeptions import ConnectorError, ScalesError
+from scales_driver_async.exeptions import (ConnectorError,
+                                           ScalesError,
+                                           ScalesFunctionNotSupported)
 
 logger = logging.getLogger('uvicorn.error')
 
@@ -25,6 +27,11 @@ def driver_handler(func):
             raise HTTPException(
                 status_code=503,
                 detail='Нет ответа от весов.'
+            )
+        except ScalesFunctionNotSupported as e:
+            raise HTTPException(
+                status_code=405,
+                detail='Функция не поддерживается весами.'
             )
         except ScalesError as e:
             logger.error(f'{kwargs}. {e}')

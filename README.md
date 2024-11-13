@@ -7,7 +7,7 @@ API реализован на FastAPI. Код драйвера и API асинх
 количеством весом одновременно с минимальными задержками. 
 
 ## Requirements
-- [Python 3](https://www.python.org/)
+- [Python 3.12](https://www.python.org/)
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [ScalesDriverAsync](https://pypi.org/project/scales-driver-async/)
 

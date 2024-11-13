@@ -5,7 +5,10 @@ from logging.handlers import RotatingFileHandler
 from typing import Type
 
 from dotenv import load_dotenv
-from scales_driver_async.drivers import CASType6, MassK1C, ScalesDriver
+from scales_driver_async.drivers import (CASType6,
+                                         FakeScales,
+                                         MassK1C,
+                                         ScalesDriver)
 
 load_dotenv()
 
@@ -23,6 +26,7 @@ logger.addHandler(log_handler)
 class Settings:
     _DRIVERS = {
         'CASType6': CASType6,
+        'FakeScales': FakeScales,
         'MassK1C': MassK1C
     }
     _CONF_FILE = r'settings.toml'

@@ -2,4 +2,4 @@ fastapi>=0.111.1,<0.112.0
 flake8==7.1.1
 flake8-isort==6.1.1
 pydantic>=2.8.2,<3.0.0
-scales_driver_async>=0.0.9
+scales_driver_async>=0.0.10
