@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { PageNotFound } from './PageNotFound';
 import { SuspenseLoadingSpinner } from './SuspenseLoadingSpinner';
 import { ErrorBoundary } from '../ErrorBoundary';
+import { ScalesData } from '../ScalesData/ScalesData.tsx';
 
 // const Login = lazy(() =>
 //   import('Login').then((module) => ({
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <SuspenseLoadingSpinner>
-        <> </>
+        <ScalesData />
       </SuspenseLoadingSpinner>
     ),
     errorElement: <ErrorBoundary />,

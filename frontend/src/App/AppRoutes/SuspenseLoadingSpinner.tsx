@@ -1,5 +1,5 @@
 import { FC, ReactNode, Suspense } from 'react';
-import { OverlayLoadingSpinner } from 'shared/components/OverLayLoadingSpinner';
+import { OverlayLoadingSpinner } from '../../shared/components/OverLayLoadingSpinner';
 
 type Props = {
   children: ReactNode;
