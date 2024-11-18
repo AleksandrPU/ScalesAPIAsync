@@ -1,38 +1,29 @@
-import { Box, Divider, Typography, useMediaQuery } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { FC } from 'react';
 
 export const PageNotFound: FC = () => {
-  const matchesMinWidth = useMediaQuery('(min-width: 500px)');
-
   return (
     <Box
       sx={{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        mt: '10vh',
       }}
     >
-      <Box display="flex" flexDirection={matchesMinWidth ? 'row' : 'column'}>
-        <Typography variant="h4" component="p" textAlign="center">
+      <Stack display="flex" flexDirection="column" spacing={2}>
+        <Typography
+          variant="h1"
+          component="p"
+          textAlign="center"
+          fontWeight={300}
+        >
           404
         </Typography>
-        {matchesMinWidth ? (
-          <Divider orientation="vertical" flexItem sx={{ mx: 5 }} />
-        ) : (
-          <Divider orientation="horizontal" flexItem sx={{ my: 3 }} />
-        )}
-        <Typography
-          variant="h6"
-          component="p"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            whiteSpace: 'nowrap',
-          }}
-        >
+        <Typography variant="h4" component="p">
           Страница не найдена
         </Typography>
-      </Box>
+      </Stack>
     </Box>
   );
 };

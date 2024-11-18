@@ -392,8 +392,7 @@ export const inputsCustomizations: Components<Theme> = {
         '&:hover': {
           borderColor: gray[400],
         },
-        [`&.${outlinedInputClasses.focused}`]: {
-        },
+        [`&.${outlinedInputClasses.focused}`]: {},
         ...theme.applyStyles('dark', {
           '&:hover': {
             borderColor: gray[500],

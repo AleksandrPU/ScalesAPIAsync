@@ -1,5 +1,11 @@
 import '@fontsource-variable/inter';
-import { createTheme, alpha, PaletteMode, Shadows } from '@mui/material/styles';
+import {
+  createTheme,
+  alpha,
+  PaletteMode,
+  Shadows,
+  ThemeOptions,
+} from '@mui/material/styles';
 
 declare module '@mui/material/Paper' {
   interface PaperPropsVariantOverrides {
@@ -96,7 +102,7 @@ export const red = {
   900: 'hsl(0, 93%, 6%)',
 };
 
-export const getDesignTokens = (mode: PaletteMode) => {
+export const getDesignTokens = (mode: PaletteMode): ThemeOptions => {
   customShadows[1] =
     mode === 'dark'
       ? 'hsla(220, 30%, 5%, 0.7) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.8) 0px 8px 16px -5px'
@@ -174,7 +180,6 @@ export const getDesignTokens = (mode: PaletteMode) => {
       text: {
         primary: gray[800],
         secondary: gray[600],
-        warning: orange[400],
         ...(mode === 'dark' && {
           primary: 'hsl(0, 0%, 100%)',
           secondary: gray[400],
@@ -401,6 +406,9 @@ export const shape = {
   borderRadius: 8,
 };
 
-// @ts-ignore
-const defaultShadows: Shadows = ['var(--mui-palette-baseShadow)', ...defaultTheme.shadows.slice(1)];
+const defaultShadows: Shadows = [
+  // @ts-expect-error неверный тип в библиотеке
+  'var(--mui-palette-baseShadow)',
+  ...defaultTheme.shadows.slice(1),
+];
 export const shadows = defaultShadows;

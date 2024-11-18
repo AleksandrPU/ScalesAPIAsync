@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError, isAxiosError } from 'axios';
 import { FC, ReactNode } from 'react';
 import {
   MutationCache,
@@ -6,112 +6,77 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import { useToasterDispatch } from '../contexts/ToasterContext';
 
 type Props = {
   children: ReactNode;
 };
 
-const globalHandleError = (error: AxiosError | Error): void => {
-  console.log('Сработал глобальный обработчик');
-  console.log(error);
-  // if (
-  //   isAxiosError(error) &&
-  //   (error.response?.status === 400 || error.response?.status === 401)
-  // )
-  //   return;
-  //
-  // if (isAxiosError(error) && error.response?.status === 403) {
-  //   store.dispatch(
-  //     openAlert({
-  //       message: error.response.data.detail ?? 'Доступ запрещён.',
-  //       alertType: 'error',
-  //     }),
-  //   );
-  //
-  //   return;
-  // }
-  //
-  // if (isAxiosError(error) && error.response?.status === 404) {
-  //   if (
-  //     // если у пользователя не начата рабочая смена - это нормальное состояние
-  //     error.config?.url === '/work_shifts/me/' &&
-  //     error.config.method === 'get'
-  //   )
-  //     return;
-  //
-  //   const responseDetailMessage: string =
-  //     typeof error.response.data.detail === 'string'
-  //       ? error.response.data.detail
-  //       : 'Данные не найдены';
-  //
-  //   store.dispatch(
-  //     openAlert({
-  //       message: responseDetailMessage.includes('Страница не найдена')
-  //         ? 'Данные не найдены'
-  //         : responseDetailMessage,
-  //       alertType: 'error',
-  //     }),
-  //   );
-  //
-  //   return;
-  // }
-  //
-  // if (isAxiosError(error) && error.code === 'ERR_CANCELED') return;
-  //
-  // if (isAxiosError(error) && error.code === 'ERR_NETWORK') {
-  //   store.dispatch(
-  //     openAlert({
-  //       message:
-  //         !!error.config?.baseURL && error.config?.baseURL.includes('weight')
-  //           ? 'Нет данных с весов'
-  //           : 'Не удалось подключиться к серверу',
-  //       alertType: 'error',
-  //     }),
-  //   );
-  //
-  //   return;
-  // }
-  //
-  // if (isAxiosError(error) && error.response?.status === 500) {
-  //   store.dispatch(
-  //     openAlert({ message: 'Ошибка сервера', alertType: 'error' }),
-  //   );
-  //
-  //   return;
-  // }
-  //
-  // if (isAxiosError(error) && error.response?.status === 503) {
-  //   store.dispatch(
-  //     openAlert({
-  //       message:
-  //         !!error.config?.baseURL &&
-  //         error.config?.baseURL.includes('weight') &&
-  //         error.response.data.detail
-  //           ? error.response.data.detail
-  //           : 'Сервер недоступен',
-  //       alertType: 'error',
-  //     }),
-  //   );
-  //
-  //   return;
-  // }
-  //
-  // if (error instanceof Error && error.message) {
-  //   store.dispatch(
-  //     openAlert({
-  //       message: error.message || 'Обнаружены неизвестные ошибки.',
-  //       alertType: 'error',
-  //     }),
-  //   );
-  //
-  //   if (IS_DEV) {
-  //     // eslint-disable-next-line no-console
-  //     console.log(error);
-  //   }
-  // }
-};
-
 export const QueryAppProvider: FC<Props> = ({ children }) => {
+  const dispatch = useToasterDispatch();
+
+  const globalHandleError = (error: AxiosError | Error): void => {
+    if (isAxiosError(error)) {
+      if (isAxiosError(error) && error.code === 'ERR_CANCELED') return;
+      if (error.status === 422) return;
+
+      if (error.status === 500 || error.status === 503) {
+        dispatch({
+          type: 'open',
+          payload: {
+            errorCode: error.status.toString(),
+            message:
+              typeof error.response?.data.detail === 'string'
+                ? error.response.data.detail
+                : 'Ошибка сервера',
+          },
+        });
+
+        return;
+      }
+
+      if (error.status === 404) {
+        dispatch({
+          type: 'open',
+          payload: {
+            errorCode: error.status.toString(),
+            message:
+              typeof error.response?.data.detail === 'string'
+                ? error.response.data.detail
+                : 'Данные не найдены',
+          },
+        });
+
+        return;
+      }
+
+      if (error.code === 'ERR_NETWORK') {
+        dispatch({
+          type: 'open',
+          payload: {
+            errorCode: error.code,
+            message: 'Проблемы с подключением к сети',
+          },
+        });
+
+        return;
+      }
+    }
+
+    if (error instanceof Error && error.message) {
+      dispatch({
+        type: 'open',
+        payload: {
+          errorCode: '',
+          message: error.message || 'Обнаружена неизвестная ошибка',
+        },
+      });
+
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
+
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: globalHandleError,

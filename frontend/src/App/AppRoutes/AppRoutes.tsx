@@ -1,19 +1,19 @@
-import { ReactNode } from 'react';
+import { lazy, ReactNode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { PageNotFound } from './PageNotFound';
 import { SuspenseLoadingSpinner } from './SuspenseLoadingSpinner';
 import { ErrorBoundary } from '../ErrorBoundary';
-import { ScalesData } from '../ScalesData/ScalesData.tsx';
+import { ROUTE_PARAM } from '../../shared/constants';
 
-// const Login = lazy(() =>
-//   import('Login').then((module) => ({
-//     default: module.Login,
-//   })),
-// );
+const ScalesData = lazy(() =>
+  import('../../Scales').then((module) => ({
+    default: module.Scales,
+  })),
+);
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: `/:${ROUTE_PARAM.SCALES_ID}?`,
     element: (
       <SuspenseLoadingSpinner>
         <ScalesData />

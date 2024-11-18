@@ -3,17 +3,19 @@ import { CssBaseline } from '@mui/material';
 import { AppTheme } from './theme/AppTheme';
 import { AppRoutes } from './AppRoutes/AppRoutes';
 import { QueryAppProvider } from './QueryAppProvider';
-import { ServerErrorProvider } from '../contexts/ServerErrorContext';
+import { ToasterProvider } from '../contexts/ToasterContext';
+import { Toaster } from './Toaster';
 
 export const App: FC = () => {
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
-      <ServerErrorProvider>
+      <ToasterProvider>
         <QueryAppProvider>
           <AppRoutes />
+          <Toaster />
         </QueryAppProvider>
-      </ServerErrorProvider>
+      </ToasterProvider>
     </AppTheme>
   );
 };
